@@ -1,25 +1,25 @@
 require 'pry'
 
-class WeatherReader
+class FootballReader
   class << self
 
     def read(file)
       begin
-        day, min = nil, nil
+        team, min = nil, nil
 
         File.open(file).each_line do |line|
           if line =~ /^\s*\d+/
             columns = line.split
-            spread = (columns[1].to_i - columns[2].to_i).abs
+            spread = (columns[6].to_i - columns[8].to_i).abs
 
             if min.nil? || spread < min
               min = spread
-              day = columns[0]
+              team = columns[1]
             end
           end
         end
 
-        puts "day: #{day}, min: #{min}"
+        puts "team: #{team}, min: #{min}"
 
       rescue => e
         puts "#{e.class} - #{e}"
@@ -29,4 +29,4 @@ class WeatherReader
   end
 end
 
-WeatherReader.read('weather.dat')
+FootballReader.read('football.dat')
