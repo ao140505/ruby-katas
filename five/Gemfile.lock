@@ -1,0 +1,12 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    fnv (0.2.0)
+    murmurhash3 (0.1.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  fnv
+  murmurhash3
