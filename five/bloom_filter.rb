@@ -3,55 +3,64 @@ require 'pry'
 require 'murmurhash3'
 require 'fnv'
 
-# Given:
-# a % n
+# Given: # a % n
 # a needs to be bigger than n!!!
-# else, you always get a
+# else, you always get a out of it
 
-$bloom = []
+class BloomFilter
+  attr_reader :bloom
+  attr_accessor :size
 
-File.open('/usr/share/dict/words','r').each_with_index do |word, i|
-  if i % 12 == 0
-    word.strip!
-    hex = Digest::MD5.hexdigest(word)
-    bits = hex.unpack('B*')[0].split('').map {|b| b.to_i}
+  def initialize(opts = {})
+    @size = opts[:size] || 5000000
+    @bloom = Array.new(self.size).fill(0)
 
-    binding.pry
-    #print '.' if i % 3000 == 0
+    load_words
+  end
 
-    if $bloom.length < 1
-      # starting the bloom filter
-      $bloom = bits
-    else
-      # loop through bits and flip correct ones in bloom
-      bits.each_with_index do |c, index|
-        if c == 1 && $bloom[index] != 1
-          $bloom[index] = 1
-        end
+  def test_word(word)
+    integers = hash(word)
+    integers.each do |i|
+      if self.bloom[i] == 0
+        puts "not a word - #{word}"
+      else
+        puts "probably, a word - #{word}, #{probability}"
       end
     end
   end
-end
 
-# does not work at the moment
-def test_word(word)
-  hex = Digest::MD5.hexdigest(word)
-  bits = hex.unpack('B*')[0].split('').map {|b| b.to_i}
+  private
 
-  bits.each_with_index do |b, index|
-    if b == 1 && $bloom[index] == 0
-      return 'incorrect word'
+  def load_words
+    File.open('/usr/share/dict/words','r').each_with_index do |word, i|
+      word.strip!
+      add_to_bloom(word)
+      @dict_size = i
     end
   end
-  return 'sucess!'
+
+  # returns array of integer values
+  def hash(word)
+    hex = FNV.new.fnv1a_32(word) % self.size
+    [hex]
+  end
+
+  # flips bits in bloom if not already set
+  def add_to_bloom(word)
+    integers = hash(word)
+    integers.each do |i|
+      self.bloom[i] = 1 unless self.bloom[i] == 1
+    end
+  end
+
+  # NOTE: don't think this is correct
+  def probability
+    num_hashes = 1
+    (((1 - Math.exp((-num_hashes * @dict_size) / self.size )) ** num_hashes) * 100).round(2).to_s +
+      '% chance of false positive'
+  end
 end
 
-#binding.pry
-
-#puts bloom.class
-#puts bloom.length
-#
-# number of zeros in filter
-puts $bloom.select { |i| i.to_i == 0}.count
-
-#http://blog.bigbinary.com/2011/07/20/ruby-pack-unpack.html
+b = BloomFilter.new()
+b.test_word('aoeu')
+b.test_word('cat')
