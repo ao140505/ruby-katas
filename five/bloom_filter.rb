@@ -18,9 +18,11 @@ class BloomFilter
     integers = hash(word)
     integers.each do |i|
       if self.bloom[i] == 0
-        puts "not a word - #{word}"
+        puts "not a word - #{word}" if debug?
+        false
       else
-        puts "probably, a word - #{word}, #{probability}"
+        puts "probably, a word - #{word}, #{probability}" if debug?
+        true
       end
     end
   end
@@ -49,11 +51,14 @@ class BloomFilter
     end
   end
 
-  # NOTE: don't think this is correct
   def probability
     num_hashes = 1
     (((1 - Math.exp((-num_hashes * @dict_size) / self.size )) ** num_hashes) * 100).round(2).to_s +
       '% chance of false positive'
+  end
+
+  def debug?
+    ENV['DEBUG'] == 'true'
   end
 end
 
