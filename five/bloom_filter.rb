@@ -3,10 +3,6 @@ require 'pry'
 require 'murmurhash3'
 require 'fnv'
 
-# Given: # a % n
-# a needs to be bigger than n!!!
-# else, you always get a out of it
-
 class BloomFilter
   attr_reader :bloom
   attr_accessor :size
