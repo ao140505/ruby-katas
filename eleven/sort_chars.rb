@@ -9,13 +9,11 @@ module Utils
     private
     def quicksort(chars)
       length = chars.length
-      if length < 2 || chars.count(chars[0]) == length
-        return chars
-      end
+      return [] if length < 1
 
-      pivot = chars[rand(length)]
+      pivot = chars.delete_at(rand(length))
       lower, upper = chars.partition {|c| c < pivot}
-      quicksort(lower) + quicksort(upper)
+      quicksort(lower) + [pivot] + quicksort(upper)
     end
   end
 end
@@ -25,9 +23,12 @@ require 'minitest/autorun'
 describe Utils do
   describe ".sort_chars" do
     it "sorts chars" do
-      #Utils.sort_chars("ao").must_equal 'ao'
-      #Utils.sort_chars("oa").must_equal 'ao'
+      Utils.sort_chars("ao").must_equal 'ao'
+      Utils.sort_chars("oa").must_equal 'ao'
       Utils.sort_chars("test").must_equal 'estt'
+      Utils.sort_chars("aoeu").must_equal 'aeou'
+      Utils.sort_chars("When not studying nuclear physics, Bambi likes to play beach volleyball."
+                      ).must_equal 'aaaaabbbbcccdeeeeeghhhiiiiklllllllmnnnnooopprsssstttuuvwyyyy'
     end
   end
 end
