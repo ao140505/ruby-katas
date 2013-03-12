@@ -15,7 +15,7 @@ class Checkout
   def total
     total = 0
     self.scanned_items.each do |item, quantity|
-      total += total_for_item(item, quantity)
+      total += item_total(item, quantity)
     end
     total.round
   end
@@ -23,7 +23,7 @@ class Checkout
   private
 
   # assumes higher quantities have a lower unit cost
-  def total_for_item(item, quantity)
+  def item_total(item, quantity)
     price = 0
     while quantity != 0
       qty = highest_discount_quantity(item, quantity)

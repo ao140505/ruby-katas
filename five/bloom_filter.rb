@@ -1,6 +1,4 @@
-require 'digest/md5'
 require 'pry'
-require 'murmurhash3'
 require 'fnv'
 
 class BloomFilter
@@ -15,15 +13,13 @@ class BloomFilter
   end
 
   def test_word(word)
-    integers = hash(word)
-    integers.each do |i|
-      if self.bloom[i] == 0
-        puts "not a word - #{word}" if debug?
-        false
-      else
-        puts "probably, a word - #{word}, #{probability}" if debug?
-        true
-      end
+    hashed = hash(word)[0]
+    if self.bloom[hashed] == 0
+      puts "not a word - #{word}" if debug?
+      false
+    else
+      puts "probably, a word - #{word}, #{probability}" if debug?
+      true
     end
   end
 
