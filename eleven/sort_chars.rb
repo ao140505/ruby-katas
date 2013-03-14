@@ -8,10 +8,9 @@ module Utils
 
     private
     def quicksort(chars)
-      length = chars.length
-      return [] if length < 1
+      return [] if chars.empty?
 
-      pivot = chars.delete_at(rand(length))
+      pivot = chars.delete_at(rand(chars.length))
       lower, upper = chars.partition {|c| c < pivot}
       quicksort(lower) + [pivot] + quicksort(upper)
     end
@@ -32,9 +31,3 @@ describe Utils do
     end
   end
 end
-
-# pick random pivot
-#
-# break into 2 arrays (partition step)
-# 1) els bigger than pivot
-# 2) els smaller than pivot
