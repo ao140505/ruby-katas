@@ -16,20 +16,19 @@ class Array
   def insertion_sort
     new_array = Array(self)
     largest = new_array[0]
-    new_array.each_with_index do |el, i|
+    new_array.each_with_index do |el, index|
       if el >= largest
         largest = el
       else
-        index = i
         loop do
-          index -= 1
-          previous = new_array[index]
-          if index >= 0 && el < previous
-            new_array[index+1] = previous  # shift vals up
+          previous = new_array[index-1]
+          if index > 0 && el < previous
+            new_array[index] = previous  # shift vals up
           else
-            new_array[index+1] = el  # insert this val
+            new_array[index] = el  # insert this val
             break
           end
+          index -= 1
         end
       end
     end
