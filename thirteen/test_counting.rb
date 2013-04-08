@@ -10,7 +10,7 @@ public interface Dave {
    */
   int countLines(File inFile); // not the real signature!
 }}
-    CodeCounter.new(file).count_lines.must_equal 3
+    CodeCounter.count_lines(file).must_equal 3
   end
 
   it "handles this other file too" do
@@ -26,7 +26,7 @@ public class Hello {
     }
 
 }}
-    CodeCounter.new(file).count_lines.must_equal 5
+    CodeCounter.count_lines(file).must_equal 5
   end
 end
 
