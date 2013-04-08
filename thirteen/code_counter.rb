@@ -4,16 +4,15 @@
 # if in block comment, find first */
 module CodeCounter
   class << self
-    def count_lines(string, line_count=0)
-      return line_count if string.empty?
-      current_line = string.lines.first
-      if has_block_comment? current_line
+    def count_lines(string)
+      until !has_block_comment? string
         start, end_at = block_comment_indices(string)
         string[start..end_at] = ''
-        return count_lines(string, line_count)
       end
-      line_count += 1 if has_code?(current_line)
-      count_lines(string[current_line.length..-1], line_count)
+      string.lines.inject(0) do |mem, line|
+        mem += 1 if has_code?(line)
+        mem
+      end
     end
 
     private
