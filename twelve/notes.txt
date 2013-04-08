@@ -1,0 +1,24 @@
+how would I implement it:
+  * V1
+  * top 10 selling products for last 24 hrs, updated every hour
+  * in a delayed job, run sql to get top 10 products
+  * something like this:
+      SELECT p.id, count(*) count
+      FROM line_items items
+      INNER JOIN products p ON items.product_id = p.id
+      GROUP BY p.id
+      ORDER BY count DESC
+      LIMIT 10;
+  * store top 10 products ids in redis sorted set?
+
+only update the list once per day:
+  * easy, change resque schedule
+
+update in real time:
+  * don't think redis makes sense anymore
+  * run the sql every time? seems slow
+  * add purchase counter to deal row? and run simpler query?
+    * SELECT id, count(*)
+      FROM products
+      ORDER BY count DESC
+      LIMIT 10;
