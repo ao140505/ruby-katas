@@ -1,5 +1,3 @@
-# what is a line of code?
-# one or more characters outside of a comment, followed by a \n
 class CodeCounter
   attr_reader :current_line, :code, :in_comment
   alias_method :in_comment?, :in_comment

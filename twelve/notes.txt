@@ -1,5 +1,4 @@
 how would I implement it:
-  * V1
   * top 10 selling products for last 24 hrs, updated every hour
   * in a delayed job, run sql to get top 10 products
   * something like this:

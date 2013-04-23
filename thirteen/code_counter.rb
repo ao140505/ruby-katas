@@ -1,7 +1,3 @@
-# what is a line of code?
-# one or more characters outside of a comment, followed by a \n
-# keep reading string by searching for \n chars
-# if in block comment, find first */
 module CodeCounter
   class << self
     def count_lines(string)
@@ -21,7 +17,7 @@ module CodeCounter
       !string.strip.gsub(/\/\/.*/, '').empty?
     end
 
-    def block_comment_indices(string)
+    def block_comment_indices(string)     # /* ... */
       start = string.index(/\/\*/)
       end_comment = string.index(/\*\//, start) + 1
       [start, end_comment]
