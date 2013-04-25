@@ -57,7 +57,7 @@ class TextGenerator
       key = previous_two_words.join ' '
       random_val = @trigrams[key].sample
       if random_val.nil?
-        break # no word that follows this
+        break
       else
         sentence <<  ' ' << random_val
         previous_two_words = [key.split[-1], random_val]
@@ -74,4 +74,3 @@ end
 file = File.open('tom_swift.txt', 'rb')
 analyzer = TextAnalyzer.new(file.read)
 TextGenerator.new(analyzer.trigrams).generate
-      #require 'pry';binding.pry
