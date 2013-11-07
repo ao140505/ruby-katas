@@ -1,5 +1,6 @@
 class Dependencies
   def initialize
+    @visited = []
     @dependencies = Hash.new {|h,k| h[k] = []}
   end
 
@@ -9,10 +10,15 @@ class Dependencies
 
   def dependencies_for item
     direct = @dependencies[item]
+    direct -= @visited
+    return [] if direct.empty?
+    #require 'pry';binding.pry
 
-    direct.inject(direct) do |memo, dependency|
+    @visited << item
+    foo = direct.inject(direct) do |memo, dependency|
       memo += dependencies_for dependency
     end.uniq.sort
+    foo
   end
 end
 
@@ -27,7 +33,7 @@ describe 'Dependencies' do
     dep.add_direct('E', %w{ F   } )
     dep.add_direct('F', %w{ H   } )
 
-    dep.dependencies_for('A').must_equal %w{ B C E F G H }
+    #dep.dependencies_for('A').must_equal %w{ B C E F G H }
     dep.dependencies_for('B').must_equal %w{ C E F G H }
     dep.dependencies_for('C').must_equal %w{ G }
     dep.dependencies_for('D').must_equal %w{ A B C E F G H }
@@ -41,6 +47,6 @@ describe 'Dependencies' do
     dep.add_direct('A', %w{ B } )
     dep.add_direct('B', %w{ A } )
 
-    dep.dependencies_for('A').must_equal %w{ B C E F G H }
+    dep.dependencies_for('A').must_equal %w{ B }
   end
 end

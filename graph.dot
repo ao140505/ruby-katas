@@ -1,0 +1,42 @@
+subgraph RGL__AdjacencyGraph {
+    cat [
+        fontsize = 8,
+        label = cat
+    ]
+
+    cot [
+        fontsize = 8,
+        label = cot
+    ]
+
+    car [
+        fontsize = 8,
+        label = car
+    ]
+
+    dot [
+        fontsize = 8,
+        label = dot
+    ]
+
+    dog [
+        fontsize = 8,
+        label = dog
+    ]
+
+    cat -- cot [
+        fontsize = 8
+    ]
+
+    cat -- car [
+        fontsize = 8
+    ]
+
+    cot -- dot [
+        fontsize = 8
+    ]
+
+    dot -- dog [
+        fontsize = 8
+    ]
+}
